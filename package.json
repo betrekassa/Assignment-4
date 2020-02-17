@@ -1,0 +1,26 @@
+{
+  "name": "assignment4",
+  "version": "1.0.1",
+  "description": "assignment for knex",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "apply-db-schema": "psql -d jokes -f sql/initial.sql",
+    "recreate-db": "dropdb jokes; createdb jokes",
+    "reset-db": "npm run recreate-db; npm run apply-db-schema; npm run seed-db",
+    "seed-db": "psql -d jokes -f sql/seed.sql",
+    "start": "nodemon -r esm src/index.js",
+    "test": "mocha --exit -r esm test/index.js"
+  },
+  "author": "Betremussie T",
+  "license": "MIT",
+  "dependencies": {
+    "chai": "^4.2.0",
+    "esm": "^3.2.25",
+    "express": "^4.17.1",
+    "knex": "^0.20.8",
+    "mocha": "^6.2.2",
+    "nodemon": "^2.0.2",
+    "pg": "^7.17.1"
+  }
+}
