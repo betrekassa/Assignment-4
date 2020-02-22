@@ -1,5 +1,5 @@
 import express from 'express';
-//import db from './database';
+import db from './database';
 import bodyParser from 'body-parser';
 import {addperson, removeperson, searchperson,updateperson} from './services/person';
 
@@ -43,44 +43,37 @@ import {addperson, removeperson, searchperson,updateperson} from './services/per
     app.post('/add_person',urlencodedParser,async(request,response) =>{ 
     
         const person = request.body;
-        //response.json(person);
-       // joke.created_on = new Date(); // next week we'll learn to make SQL do this
-       //await addperson(person);
-       response.json(addperson(person));
+        await addperson(person);
+        response.json(person);
     //});
     });
 
 
     app.post('/remove_person',urlencodedParser,async(request,response) =>{ 
-    
+
       const pk_id = request.body.pk_person_id;
-      //response.json(person);
-     // joke.created_on = new Date(); // next week we'll learn to make SQL do this
-     //await addperson(person);
-     response.json(removeperson(pk_id));
-  //});
+      await removeperson(pk_id);
+      response.send("Sucesfully Removed");
   });
 
 
   
   app.post('/search_person',urlencodedParser,async(request,response) =>{ 
     
-    const text = request.body.searh_text;
-    //response.json(person);
-   // joke.created_on = new Date(); // next week we'll learn to make SQL do this
-   //await addperson(person);
-   response.json(searchperson(text));
-//});
+   // const text = request.body.searh_text;
+    await db('tbl_person')
+    .where('first_name','like', `%${request.body.searchtext}%`)
+    .then(function(data) 
+    { 
+      response.send(data);
+    });
 });
    
 app.post('/update_person',urlencodedParser,async(request,response) =>{ 
     
   const person = request.body;
-  //response.json(person);
- // joke.created_on = new Date(); // next week we'll learn to make SQL do this
- //await addperson(person);
- response.json(updateperson(person));
-//});
+  await updateperson(person);
+  response.json(person);
 });
 const staticRoute = express.static('public');
 
